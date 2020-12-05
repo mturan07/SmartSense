@@ -1,0 +1,83 @@
+﻿@model EvlaSmartSense.Web.ViewModel.VmReadingsSensors
+@using EvlaSmartSense.Web.Data
+
+@{
+    ViewBag.Title = "Charts";
+}
+
+<div style="margin-bottom: 15px">
+    <form class="form-inline" action="~/Home/Charts" method="post">
+        @*<input type="hidden" id="plaka" name="plaka" value="@HttpContext.Current.Session["KMUserName"].ToString()" />*@
+        <div class="form-group mb-2">
+            Select device for records
+            <select class="form-control" id="CihazID" name="CihazID">
+
+                @foreach (var item in Model.Sensors)
+                {
+                    if (item.Text == ViewBag.CihazID)
+                    {
+                        <option selected>@item.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Text">@item.Text</option>
+                    }
+                }
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Göster</button>
+    </form>
+</div>
+
+<div class="box box-info">
+    <div class="box-header with-border">
+        <h3 class="box-title">Charts</h3>
+
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+
+    </div>
+    <div class="box-body">
+
+        <div class="card mb-3">
+            <div class="card-header">
+
+            </div>
+            <div class="card-body">
+                <div id="myfirstchart" style="height: 250px;"></div>
+            </div>
+            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
+
+    </div>
+</div>
+
+@section grafik {
+    <!-- morris -->
+    <script src="~/Content/js/raphael-min.js"></script>
+    <script src="~/Content/js/morris.min.js"></script>
+
+    <script>
+        Morris.Area({
+            element: 'myfirstchart',
+            data: [
+
+                @foreach (var item in Model.Readings)
+                {
+                    @Html.Raw("{ y: '" + item.RECORDTIME.ToString("yyyy-MM-dd HH:mm") + "'"+
+                        ", t: " + item.AIR_TEMPERATURE.ToString().Replace(',', '.') + " },")
+                }
+            ],
+            xkey: 'y',
+            ykeys: 't',
+            labels: 'Temperature'
+        });
+    </script>
+}

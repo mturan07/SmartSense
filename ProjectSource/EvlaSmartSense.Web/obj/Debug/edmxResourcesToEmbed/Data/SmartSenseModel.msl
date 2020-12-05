@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SmartSenseModelStoreContainer" CdmEntityContainer="SmartSenseEntities1">
+    <EntitySetMapping Name="errors">
+      <EntityTypeMapping TypeName="SmartSenseModel.errors">
+        <MappingFragment StoreEntitySet="errors">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="RECORDTIME" ColumnName="RECORDTIME" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+          <ScalarProperty Name="DEVICEID" ColumnName="DEVICEID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="fields">
+      <EntityTypeMapping TypeName="SmartSenseModel.fields">
+        <MappingFragment StoreEntitySet="fields">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+          <ScalarProperty Name="SENSORID" ColumnName="SENSORID" />
+          <ScalarProperty Name="ALARMTEMP" ColumnName="ALARMTEMP" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="readings">
+      <EntityTypeMapping TypeName="SmartSenseModel.readings">
+        <MappingFragment StoreEntitySet="readings">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="AIR_HUMIDITY" ColumnName="AIR_HUMIDITY" />
+          <ScalarProperty Name="AIR_TEMPERATURE" ColumnName="AIR_TEMPERATURE" />
+          <ScalarProperty Name="RECORDTIME" ColumnName="RECORDTIME" />
+          <ScalarProperty Name="DEVICEID" ColumnName="DEVICEID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sensors">
+      <EntityTypeMapping TypeName="SmartSenseModel.sensors">
+        <MappingFragment StoreEntitySet="sensors">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DEVICEID" ColumnName="DEVICEID" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+          <ScalarProperty Name="FIELDID" ColumnName="FIELDID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="settings">
+      <EntityTypeMapping TypeName="SmartSenseModel.settings">
+        <MappingFragment StoreEntitySet="settings">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="FIRSTNAME" ColumnName="FIRSTNAME" />
+          <ScalarProperty Name="LASTNAME" ColumnName="LASTNAME" />
+          <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+          <ScalarProperty Name="GSM" ColumnName="GSM" />
+          <ScalarProperty Name="FAX" ColumnName="FAX" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+          <ScalarProperty Name="LANGSID" ColumnName="LANGSID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="users">
+      <EntityTypeMapping TypeName="SmartSenseModel.users">
+        <MappingFragment StoreEntitySet="users">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="FULLNAME" ColumnName="FULLNAME" />
+          <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+          <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="langs">
+      <EntityTypeMapping TypeName="SmartSenseModel.langs">
+        <MappingFragment StoreEntitySet="langs">
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

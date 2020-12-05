@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="evlateknoloji_sensorsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="errors">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="RECORDTIME" Type="DateTime" />
+    <Property Name="DESCRIPTION" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="DEVICEID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="fields">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DESCRIPTION" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="ALARMTEMP" Type="Single" />
+  </EntityType>
+  <EntityType Name="readings">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AIR_HUMIDITY" Type="Double" Nullable="false" />
+    <Property Name="AIR_TEMPERATURE" Type="Double" Nullable="false" />
+    <Property Name="RECORDTIME" Type="DateTime" annotation:StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DEVICEID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sensors">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="DEVICEID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DESCRIPTION" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="FIELDID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="users">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FULLNAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="PASSWORD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ACTIVE" Type="Boolean" />
+  </EntityType>
+  <EntityContainer Name="conn_evlateknoloji_sensorsEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="errors" EntityType="Self.errors" />
+    <EntitySet Name="fields" EntityType="Self.fields" />
+    <EntitySet Name="readings" EntityType="Self.readings" />
+    <EntitySet Name="sensors" EntityType="Self.sensors" />
+    <EntitySet Name="users" EntityType="Self.users" />
+    <EntitySet Name="settings" EntityType="evlateknoloji_sensorsModel.settings" />
+    <EntitySet Name="langs" EntityType="evlateknoloji_sensorsModel.langs" />
+  </EntityContainer>
+  <EntityType Name="settings">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="FIRSTNAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="LASTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PHONE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="GSM" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="FAX" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ADDRESS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="LANGSID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="langs">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+</Schema>

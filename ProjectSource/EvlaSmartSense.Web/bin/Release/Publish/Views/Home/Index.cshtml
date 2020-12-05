@@ -1,0 +1,226 @@
+﻿@model IEnumerable<EvlaSmartSense.Web.Models.SensorReadings>
+@using EvlaSmartSense.Web.Models
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Home";
+    var mySensors = Model.ToList();
+    IEnumerable<EvlaSmartSense.Web.Data.fields> Fields = ViewBag.FieldsList;
+    IEnumerable<EvlaSmartSense.Web.Data.sensors> Sensors = ViewBag.SensorsList;
+}
+
+<!-- Default box -->
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Temperature &amp; Humidity Monitor</h3>
+
+        <div class="box-tools pull-right">
+            @*<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                        title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fa fa-times"></i>
+                </button>*@
+        </div>
+    </div>
+
+    <div id="sensor" class="box-body">
+        <div class="row">
+            @for (var i = 1; i <= 5; i++)
+            {
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="card mb-3">
+
+                        @{
+                            string text1 = "sicaklik" + i.ToString();
+                            string text2 = "sicaklik" + i.ToString() + "_text";
+
+                            string FieldName = "";
+
+                            double Temperature = 0, AlarmValue = 0;
+
+                            if (mySensors[i - 1].DeviceID != null)
+                            {
+                                EvlaSmartSense.Web.Data.sensors Sensor = Sensors.Where(s => s.DEVICEID == mySensors[i - 1].DeviceID).First();
+                                if (Sensor != null)
+                                {
+                                    EvlaSmartSense.Web.Data.fields Field = Fields.Where(f => f.ID == Sensor.FIELDID).First();
+
+                                    if (Field != null)
+                                    {
+                                        FieldName = Field.NAME;
+
+                                        Temperature = mySensors[i - 1].Temperature;
+
+                                        if (Field.ALARMTEMP != null){ AlarmValue = Convert.ToDouble(Field.ALARMTEMP); }
+
+                                    }
+                                }
+                            }
+                        }
+
+                        <div class="card-body fa-border round" style="margin-bottom: 10px">
+                            <div class="text-center text-blue" style="font-size: large; margin-bottom: -20px; margin-top: 20px;">
+                                <i class="wi wi-thermometer margin-r-5"></i>Sensor @i.ToString()
+
+                                @{
+                                    if (AlarmValue > 0 & Temperature > 0)
+                                    {
+                                        if (AlarmValue > Temperature)
+                                        {
+                                            <img src="~/Content/img/pulse.gif" width="20" height="20" />
+                                        }
+                                    }
+                                }
+
+                            </div>
+                            <div id="@text1" class="gauge"></div>
+
+                            @*<p id="@text2" class="text-center">0-50 is green, 51-100 is red</p>*@
+                            @{
+                                string humidity = mySensors[i - 1].Humidity.ToString("0.##").Replace(',', '.'); // (mySensors[i - 1].ReadingDate.ToShortDateString() == DateTime.Now.ToShortDateString()) ? "<strong>Online</strong>" : "Offline" ;
+                            }
+                            <p id="@text2" class="text-center" style="font-size: medium; font-weight:600">Humidity : @humidity  %</p>
+
+                            @{
+                                string deviceState = mySensors[i - 1].State; // (mySensors[i - 1].ReadingDate.ToShortDateString() == DateTime.Now.ToShortDateString()) ? "<strong>Online</strong>" : "Offline" ;
+
+                                string SonOkumaZamani = "-";
+
+                                if (deviceState.Equals("Online"))
+                                {
+                                    @Html.Raw("<div id=\"sensor_state\" class=\"text-center\">Device State : <strong class=\"text-green\">" + deviceState + "</strong></div>")
+                                    SonOkumaZamani = @mySensors[i - 1].ReadingDate.ToString("yyyy.MM.dd HH:mm");
+                                }
+                                else
+                                {
+                                    @Html.Raw("<div id=\"sensor_state\" class=\"text-center\">Device State : <strong class=\"text-red\">" + deviceState + "</strong></div>")
+                                }
+
+                                @Html.Raw("<div id=\"field_name\" class=\"text-center\">Location : <strong class=\"text-blue\">" + FieldName + "</strong></div>")
+                            }
+                            <div id="last_read" class="text-center" style="margin-bottom: 15px">Last Read : @SonOkumaZamani</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <!--
+    <div class="box-footer">
+        Footer
+    </div>
+    -->
+</div>
+<!-- /.box -->
+
+@section sensorler {
+    <!-- morris -->
+    <script src="~/Content/js/raphael-min.js"></script>
+    <script src="~/Content/js/justgage.js"></script>
+
+    <script>
+
+        @{
+            string[] sensorReads = new string[5] {"0", "0", "0", "0", "0"};
+
+            int x = 0;
+            foreach (SensorReadings item in Model)
+            {
+                sensorReads[x] = item.Temperature.ToString();
+                x++;
+            }
+
+            @Html.Raw("var sensor_values = [];");
+
+            for (int i = 0; i < 5; i++)
+            {
+                @Html.Raw("sensor_values.push('" + sensorReads[i].ToString().Replace(',', '.') + "');");
+            }
+        }
+
+        @for (int i = 1; i <= 5; i++)
+        {
+            string sonuc = "0";
+            if (sensorReads[i - 1].ToString() != "")
+            {
+                sonuc = "sensor_values[" + (i - 1).ToString() + "]";
+            }
+
+            //string sonuc = (sensorReads[i-1].ToString() == "") ? "0" : "sensor_values["+ (i - 1).ToString() + "]";
+
+            @Html.Raw("document.addEventListener(\"DOMContentLoaded\", ")
+            @Html.Raw("function (event) { ")
+            @Html.Raw("var sicaklik"+i.ToString()+" = new JustGage({")
+            @Html.Raw("id: \"sicaklik"+i.ToString()+"\", ")
+            @Html.Raw("     value: " + sonuc + ", ")
+            @Html.Raw("     min: 0, ")
+            @Html.Raw("     max: 100, ")
+            @Html.Raw("     decimals: 2, ")
+            @Html.Raw("     gaugeWidthScale: 0.6, ")
+            @Html.Raw("     customSectors: [{ ")
+            @Html.Raw("         color: \"#00ff00\", ")
+            @Html.Raw("         lo: 0, ")
+            @Html.Raw("         hi: 50 ")
+            @Html.Raw("     }, { ")
+            @Html.Raw("         color: \"#ff0000\", ")
+            @Html.Raw("         lo: 50, ")
+            @Html.Raw("         hi: 100 ")
+            @Html.Raw("     }], ")
+            @Html.Raw("     counter: true ")
+            @Html.Raw("  }); ")
+            @Html.Raw("}); ")
+        }
+
+        //document.addEventListener("DOMContentLoaded",
+        //    function (event) {
+        //        var sicaklik2 = new JustGage({
+        //            id: "sicaklik2",
+        //            value: 25.75,
+        //            min: 0,
+        //            max: 100,
+        //            decimals: 2,
+        //            gaugeWidthScale: 0.6,
+        //            customSectors: [{
+        //                color: "#00ff00",
+        //                lo: 0,
+        //                hi: 50
+        //            }, {
+        //                color: "#ff0000",
+        //                lo: 50,
+        //                hi: 100
+        //            }],
+        //            counter: true
+        //        });
+        //    });
+
+        //document.addEventListener("DOMContentLoaded",
+        //    function (event) {
+        //        var sicaklik3 = new JustGage({
+        //            id: "sicaklik3",
+        //            value: 25.85,
+        //            min: 0,
+        //            max: 100,
+        //            decimals: 2,
+        //            gaugeWidthScale: 0.6,
+        //            customSectors: [{
+        //                color: "#00ff00",
+        //                lo: 0,
+        //                hi: 50
+        //            }, {
+        //                color: "#ff0000",
+        //                lo: 50,
+        //                hi: 100
+        //            }],
+        //            counter: true
+        //        });
+        //    });
+    </script>
+
+    <script type="text/javascript">
+        setInterval(function () {
+            location.reload();
+        }, 20000);
+    </script>
+}

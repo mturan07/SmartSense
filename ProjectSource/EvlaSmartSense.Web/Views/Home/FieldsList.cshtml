@@ -1,0 +1,101 @@
+﻿@model IEnumerable<EvlaSmartSense.Web.Data.fields>
+
+@{
+    ViewBag.Title = "Fields List";
+}
+
+<div class="box box-info">
+    <div class="box-header with-border">
+        <input type="button" class="btn btn-success" value="Add New" onclick="location.href='@Url.Action("AddField", "Home")'">
+
+        @*<div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>*@
+    </div>
+    <div class="box-body">
+
+        <form action="~/Home/FieldsList" method="post"></form>
+
+        <table id="tablom" class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Field Name</th>
+                    <th>Description</th>
+                    <th>Alarm Temperature</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NAME)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DESCRIPTION)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ALARMTEMP)
+                        </td>
+                        <td>
+                            <button class="btn btn-info"
+                                    onclick="location.href='@Url.Action("EditField", "Home", new { id = item.ID })'">
+                                Edit
+                            </button>
+                            <button class="btn btn-danger"
+                                    onclick="
+                                    $.confirm({
+                                        title : 'Confirmation',
+                                        content: '\'@item.NAME\' confirm delete?',
+                                        buttons: {
+                                            Confirm: {
+                                                btnClass: 'btn-success custom-class',
+                                                action: function () {
+                                                    window.location.href = '~/Home/DeleteField/@item.ID';
+                                                }
+                                            },
+                                            Cancel: {
+                                                btnClass: 'btn-danger custom-class',
+                                                action: function () {
+                                                    //$.alert('Vazgeçtiniz');
+                                                }
+                                            }
+                                        }
+                                    });
+                                    ">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+    <!--
+    <div class="box-footer">
+        Footer
+    </div>
+    -->
+</div>
+
+@section tablo{
+    <!-- jquery-confirm -->
+    <script src="~/Theme/jquery-confirm/dist/jquery-confirm.min.js"></script>
+    <!-- Datatables.Net -->
+    <script src="~/Theme/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/Theme/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tablom').DataTable();
+        });
+    </script>
+}
